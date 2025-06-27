@@ -1,0 +1,2970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAFIZH STORE - Team Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- CSS Variables for Theming --- */
+        :root {
+            /* Base Colors */
+            --primary-blue: #007bff;
+            --primary-blue-dark: #0056b3;
+            --secondary-gray: #6c757d;
+            --secondary-gray-dark: #5a6268;
+            --danger-red: #dc3545;
+            --danger-red-dark: #a71d2a;
+            --success-green: #28a745;
+            --success-green-dark: #1e7e34;
+            --info-blue: #17a2b8; /* New for info */
+
+            /* Light Theme (Default) */
+            --body-bg-light: #f4f7f6;
+            --header-bg-light: #ffffff;
+            --card-bg-light: #ffffff;
+            --text-color-light: #343a40;
+            --subtle-text-color-light: #6c757d;
+            --border-color-light: #e0e0e0;
+            --input-bg-light: #f8f9fa;
+            --input-border-light: #dee2e6;
+            --table-header-bg-light: #f1f3f5;
+            --shadow-light: 0 4px 12px rgba(0,0,0,0.06);
+            --header-shadow-light: 0 2px 8px rgba(0,0,0,0.05);
+
+            /* Dark Theme */
+            --body-bg-dark: #1a1a1a;
+            --header-bg-dark: #2c2c2c;
+            --card-bg-dark: #2c2c2c;
+            --text-color-dark: #e0e0e0;
+            --subtle-text-color-dark: #b0b0b0;
+            --border-color-dark: #3a3a3a;
+            --input-bg-dark: #383838;
+            --input-border-dark: #4a4a4a;
+            --table-header-bg-dark: #3a3a3a;
+            --shadow-dark: 0 6px 20px rgba(0,0,0,0.3);
+            --header-shadow-dark: 0 3px 10px rgba(0,0,0,0.2);
+
+            /* Default (Fallback/Base) - These are initially set to light theme values */
+            --body-bg: var(--body-bg-light);
+            --header-bg: var(--header-bg-light);
+            --header-shadow: var(--header-shadow-light);
+            --logo-color: var(--primary-blue);
+            --main-card-bg: var(--card-bg-light);
+            --main-card-shadow: var(--shadow-light);
+            --card-border: 1px solid var(--border-color-light);
+            --input-bg: var(--input-bg-light);
+            --input-border: 1px solid var(--input-border-light);
+            --input-icon-color: var(--subtle-text-color-light);
+            --input-text-color: var(--text-color-light);
+            --button-primary-bg: var(--primary-blue);
+            --button-primary-hover-bg: var(--primary-blue-dark);
+            --button-secondary-bg: var(--secondary-gray);
+            --button-secondary-hover-bg: var(--secondary-gray-dark);
+            --button-success-bg: var(--success-green);
+            --button-success-hover-bg: var(--success-green-dark);
+            --button-danger-bg: var(--danger-red);
+            --button-danger-hover-bg: var(--danger-red-dark);
+            --card-header-team-bg: var(--primary-blue);
+            --card-header-team-text-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+            --card-header-enemy-bg: var(--danger-red);
+            --card-header-enemy-text-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
+            --table-header-bg: var(--table-header-bg-light);
+            --table-header-border: 1px solid var(--border-color-light);
+            --table-header-text-color: var(--subtle-text-color-light);
+            --table-row-border: 1px solid #f0f0f0; /* Slightly lighter than border-color-light */
+            --table-row-text-color: var(--text-color-light);
+            --waiting-text-color: var(--subtle-text-color-light);
+            --settings-sidebar-bg: var(--card-bg-light);
+            --settings-sidebar-shadow: -6px 0 20px rgba(0, 0, 0, 0.15);
+            --settings-header-border: 1px solid var(--border-color-light);
+            --settings-header-title-color: var(--text-color-light);
+            --settings-close-btn-color: var(--subtle-text-color-light);
+            --settings-close-btn-hover-color: var(--text-color-light);
+            --setting-group-border: 1px solid var(--border-color-light);
+            --setting-item-border: 1px solid var(--border-color-light);
+            --setting-item-label-color: var(--text-color-light);
+            --toggle-slider-bg: #ccc;
+            --toggle-slider-checked-bg: var(--primary-blue);
+            --toggle-slider-checked-shadow: 0 0 1px var(--primary-blue);
+            --select-selected-bg: var(--input-bg-light);
+            --select-selected-border: 1px solid var(--input-border-light);
+            --select-arrow-color: var(--subtle-text-color-light);
+            --select-items-bg: var(--card-bg-light);
+            --select-items-border: 1px solid var(--input-border-light);
+            --select-items-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            --select-items-hover-bg: rgba(0, 0, 0, 0.05);
+            --select-items-text-color: var(--text-color-light);
+            --settings-footer-border: 1px solid var(--border-color-light);
+            --info-text-color: var(--info-blue);
+            --error-text-color: var(--danger-red); /* New: Error text color */
+            --success-text-color: var(--success-green); /* New: Success text color */
+        }
+
+        /* --- Dark Theme Application --- */
+        body.dark-theme {
+            --body-bg: var(--body-bg-dark);
+            --header-bg: var(--header-bg-dark);
+            --header-shadow: var(--header-shadow-dark);
+            --logo-color: #64b5f6; /* Lighter blue for dark theme */
+            --main-card-bg: var(--card-bg-dark);
+            --main-card-shadow: var(--shadow-dark);
+            --card-border: 1px solid var(--border-color-dark);
+            --input-bg: var(--input-bg-dark);
+            --input-border: 1px solid var(--input-border-dark);
+            --input-icon-color: var(--subtle-text-color-dark);
+            --input-text-color: var(--text-color-dark);
+            --button-primary-bg: #42a5f5; /* Lighter blue */
+            --button-primary-hover-bg: #1e88e5;
+            --button-secondary-bg: #5c5c5c;
+            --button-secondary-hover-bg: #4c4c4c;
+            --button-success-bg: #66bb6a;
+            --button-success-hover-bg: #43a047;
+            --button-danger-bg: #ef5350; /* Lighter red */
+            --button-danger-hover-bg: #e53935;
+            --card-header-team-bg: #42a5f5;
+            --card-header-team-text-shadow: 0 0 8px rgba(66, 165, 245, 0.5);
+            --card-header-enemy-bg: #ef5350; /* Lighter red */
+            --card-header-enemy-text-shadow: 0 0 8px rgba(239, 83, 80, 0.5);
+            --table-header-bg: var(--table-header-bg-dark);
+            --table-header-border: 1px solid var(--border-color-dark);
+            --table-header-text-color: var(--subtle-text-color-dark);
+            --table-row-border: 1px solid #323232; /* Slightly lighter than border-color-dark */
+            --table-row-text-color: var(--text-color-dark);
+            --waiting-text-color: var(--subtle-text-color-dark);
+            --settings-sidebar-bg: var(--card-bg-dark);
+            --settings-sidebar-shadow: -6px 0 20px rgba(0, 0, 0, 0.4);
+            --settings-header-border: 1px solid var(--border-color-dark);
+            --settings-header-title-color: var(--text-color-dark);
+            --settings-close-btn-color: var(--subtle-text-color-dark);
+            --settings-close-btn-hover-color: var(--text-color-dark);
+            --setting-group-border: 1px solid var(--border-color-dark);
+            --setting-item-border: 1px solid var(--border-color-dark);
+            --setting-item-label-color: var(--text-color-dark);
+            --toggle-slider-bg: #555;
+            --toggle-slider-checked-bg: #42a5f5;
+            --toggle-slider-checked-shadow: 0 0 1px #42a5f5;
+            --select-selected-bg: var(--input-bg-dark);
+            --select-selected-border: 1px solid var(--input-border-dark);
+            --select-arrow-color: var(--subtle-text-color-dark);
+            --select-items-bg: var(--card-bg-dark);
+            --select-items-border: 1px solid var(--input-border-dark);
+            --select-items-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            --select-items-hover-bg: rgba(255, 255, 255, 0.08);
+            --select-items-text-color: var(--text-color-dark);
+            --settings-footer-border: 1px solid var(--border-color-dark);
+            --info-text-color: #72bcd4; /* Lighter info blue for dark theme */
+            --error-text-color: #ff8a80; /* Lighter red for dark theme */
+            --success-text-color: #a5d6a7; /* Lighter green for dark theme */
+        }
+
+        /* --- Light Theme Application (now explicitly applies light theme variables) --- */
+        body.light-theme {
+            --body-bg: var(--body-bg-light);
+            --header-bg: var(--header-bg-light);
+            --header-shadow: var(--header-shadow-light);
+            --logo-color: var(--primary-blue);
+            --main-card-bg: var(--card-bg-light);
+            --main-card-shadow: var(--shadow-light);
+            --card-border: 1px solid var(--border-color-light);
+            --input-bg: var(--input-bg-light);
+            --input-border: 1px solid var(--input-border-light);
+            --input-icon-color: var(--subtle-text-color-light);
+            --input-text-color: var(--text-color-light);
+            --button-primary-bg: var(--primary-blue);
+            --button-primary-hover-bg: var(--primary-blue-dark);
+            --button-secondary-bg: var(--secondary-gray);
+            --button-secondary-hover-bg: var(--secondary-gray-dark);
+            --button-success-bg: var(--success-green);
+            --button-success-hover-bg: var(--success-green-dark);
+            --button-danger-bg: var(--danger-red);
+            --button-danger-hover-bg: var(--danger-red-dark);
+            --card-header-team-bg: var(--primary-blue);
+            --card-header-team-text-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+            --card-header-enemy-bg: var(--danger-red);
+            --card-header-enemy-text-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
+            --table-header-bg: var(--table-header-bg-light);
+            --table-header-border: 1px solid var(--border-color-light);
+            --table-header-text-color: var(--subtle-text-color-light);
+            --table-row-border: 1px solid #f0f0f0;
+            --table-row-text-color: var(--text-color-light);
+            --waiting-text-color: var(--subtle-text-color-light);
+            --settings-sidebar-bg: var(--card-bg-light);
+            --settings-sidebar-shadow: -6px 0 20px rgba(0, 0, 0, 0.15);
+            --settings-header-border: 1px solid var(--border-color-light);
+            --settings-header-title-color: var(--text-color-light);
+            --settings-close-btn-color: var(--subtle-text-color-light);
+            --settings-close-btn-hover-color: var(--text-color-light);
+            --setting-group-border: 1px solid var(--border-color-light);
+            --setting-item-border: 1px solid var(--border-color-light);
+            --setting-item-label-color: var(--text-color-light);
+            --toggle-slider-bg: #ccc;
+            --toggle-slider-checked-bg: var(--primary-blue);
+            --toggle-slider-checked-shadow: 0 0 1px var(--primary-blue);
+            --select-selected-bg: var(--input-bg-light);
+            --select-selected-border: 1px solid var(--input-border-light);
+            --select-arrow-color: var(--subtle-text-color-light);
+            --select-items-bg: var(--card-bg-light);
+            --select-items-border: 1px solid var(--input-border-light);
+            --select-items-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            --select-items-hover-bg: rgba(0, 0, 0, 0.05);
+            --select-items-text-color: var(--text-color-light);
+            --settings-footer-border: 1px solid var(--border-color-light);
+            --info-text-color: var(--info-blue);
+            --error-text-color: var(--danger-red);
+            --success-text-color: var(--success-green);
+        }
+
+        /* --- Base Styles --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--body-bg);
+            color: var(--input-text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Header --- */
+        .header {
+            background-color: var(--header-bg);
+            box-shadow: var(--header-shadow);
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--logo-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo .v-icon {
+            font-size: 1.2em;
+            margin-right: 10px;
+            color: var(--logo-color);
+        }
+
+        /* --- Main Content Layout (Client App) --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            display: grid;
+            gap: 25px;
+            grid-template-columns: 1fr; /* Single column for mobile */
+        }
+
+        @media (min-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr 1fr; /* Two columns for larger screens */
+            }
+        }
+
+        /* --- Admin Main Content Layout --- */
+        .admin-main-content {
+            flex-grow: 1;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            display: grid;
+            gap: 25px;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) {
+            .admin-main-content {
+                grid-template-columns: 1fr 1fr; /* Two columns for admin cards */
+            }
+        }
+        @media (min-width: 1024px) {
+            .admin-main-content {
+                grid-template-columns: 1fr 1fr 1fr; /* Three columns for admin cards */
+            }
+        }
+
+
+        /* --- Input Section --- */
+        .input-section {
+            grid-column: 1 / -1; /* Spans full width */
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+            padding: 15px;
+            background-color: var(--main-card-bg);
+            border-radius: 12px;
+            box-shadow: var(--main-card-shadow);
+            border: var(--card-border);
+        }
+
+        .input-wrapper {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: var(--input-border);
+            background-color: var(--input-bg);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            min-width: 250px;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+
+        .input-wrapper .icon {
+            margin-right: 10px;
+            color: var(--input-icon-color);
+            font-size: 1.1em;
+        }
+
+        .input-wrapper input {
+            flex-grow: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 1em;
+            color: var(--input-text-color);
+            padding: 2px 0;
+        }
+
+        .input-wrapper input::placeholder {
+            color: var(--subtle-text-color-light);
+            opacity: 0.8;
+        }
+        body.dark-theme .input-wrapper input::placeholder {
+            color: var(--subtle-text-color-dark);
+        }
+
+        /* Token Visibility Toggle Button */
+        .toggle-password {
+            margin-left: 10px;
+            cursor: pointer;
+            color: var(--input-icon-color);
+            font-size: 1.1em;
+            padding: 5px; /* Add padding for easier clicking */
+        }
+        .toggle-password:hover {
+            color: var(--text-color-light); /* Darker on hover in light mode */
+        }
+        body.dark-theme .toggle-password:hover {
+            color: var(--text-color-dark);
+        }
+
+        /* General Button Styles */
+        .start-button, .menu-button, .admin-button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .start-button {
+            background-color: var(--button-primary-bg);
+            color: white;
+        }
+
+        .start-button:hover {
+            background-color: var(--button-primary-hover-bg);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        }
+        .start-button:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+
+        .menu-button {
+            background-color: var(--button-secondary-bg);
+            color: white;
+            padding: 12px 18px; /* Slightly different padding for icon button */
+        }
+
+        .menu-button:hover {
+            background-color: var(--button-secondary-hover-bg);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.2);
+        }
+         .menu-button:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        /* --- Cards (Client App) --- */
+        .card {
+            background-color: var(--main-card-bg);
+            box-shadow: var(--main-card-shadow);
+            border-radius: 12px;
+            overflow: hidden;
+            border: var(--card-border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            padding: 15px 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header.team {
+            background-color: var(--card-header-team-bg);
+            text-shadow: var(--card-header-team-text-shadow);
+        }
+
+        .card-header.enemy {
+            background-color: var(--card-header-enemy-bg);
+            text-shadow: var(--card-header-enemy-text-shadow);
+        }
+
+        .star-icon {
+            font-size: 1.1em;
+            color: #ffc107; /* Consistent star color */
+            text-shadow: 0 0 5px rgba(255,193,7,0.5);
+        }
+
+        .card-content {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-x: auto; /* Allow horizontal scrolling for tables */
+        }
+
+        /* --- Table Styles --- */
+        .table-header, .table-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1.5fr 1.5fr 1.5fr 1.5fr; /* Base columns */
+            gap: 10px;
+            padding: 12px 0;
+            align-items: center;
+            text-align: left;
+            min-width: 600px; /* Ensure table doesn't shrink too much */
+        }
+        @media (max-width: 767px) {
+            .table-header, .table-row {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* More flexible on small screens */
+                min-width: unset;
+                overflow-x: auto;
+            }
+        }
+
+        .table-header {
+            background-color: var(--table-header-bg);
+            border-bottom: var(--table-header-border);
+            color: var(--table-header-text-color);
+            font-weight: 500;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 8px; /* Match card radius for top */
+            padding-left: 15px; /* Adjust padding for first column */
+            padding-right: 15px; /* Adjust padding for last column */
+            margin-bottom: 10px;
+        }
+
+        .table-row {
+            border-bottom: var(--table-row-border);
+            color: var(--table-row-text-color);
+            font-size: 0.95em;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .table-row div {
+            padding: 5px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .waiting-text {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--waiting-text-color);
+            font-style: italic;
+        }
+
+        /* Hide specific columns/cards based on toggle settings */
+        .hidden-column .battle-count,
+        .hidden-column .battle-count-data {
+            display: none !important;
+        }
+
+        .hidden-card {
+            display: none !important;
+        }
+
+        /* --- Overlay for Sidebar --- */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            display: none;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        .overlay.visible {
+            opacity: 1;
+            display: block; /* Ensure it's block when visible */
+        }
+
+
+        /* --- Settings Sidebar --- */
+        .settings-sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%; /* Start off-screen */
+            width: 90%;
+            max-width: 400px;
+            height: 100%;
+            background-color: var(--settings-sidebar-bg);
+            box-shadow: var(--settings-sidebar-shadow);
+            z-index: 1000;
+            transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* More modern transition */
+            padding: 25px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .settings-sidebar.open {
+            right: 0;
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: var(--settings-header-border);
+        }
+
+        .settings-header h2 {
+            margin: 0;
+            font-size: 1.6em;
+            font-weight: 600;
+            color: var(--settings-header-title-color);
+        }
+
+        .settings-header .close-btn {
+            background: none;
+            border: none;
+            font-size: 2.2em;
+            color: var(--settings-close-btn-color);
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .settings-header .close-btn:hover {
+            color: var(--settings-close-btn-hover-color);
+            transform: rotate(90deg);
+        }
+
+        .settings-content-wrapper {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 10px; /* For scrollbar */
+        }
+
+        .setting-group {
+            margin-bottom: 30px;
+        }
+
+        .setting-group h3 {
+            font-size: 1.2em;
+            font-weight: 500;
+            color: var(--table-header-text-color);
+            margin-bottom: 18px;
+            padding-bottom: 8px;
+            border-bottom: var(--setting-group-border);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: var(--setting-item-border);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        .setting-group > .setting-item:last-of-type {
+            border-bottom: none; /* Ensure last item in a group has no border */
+        }
+
+
+        .setting-item label {
+            color: var(--setting-item-label-color);
+            flex-grow: 1;
+            font-size: 1em;
+            margin-right: 15px;
+        }
+
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 45px; /* Increased width */
+            height: 25px; /* Increased height */
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--toggle-slider-bg);
+            transition: .4s;
+            border-radius: 25px; /* Fully rounded */
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 21px; /* Slightly smaller than slider height */
+            width: 21px; /* Slightly smaller than slider width */
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Subtle shadow for the thumb */
+        }
+
+        input:checked + .slider {
+            background-color: var(--toggle-slider-checked-bg);
+        }
+
+        input:focus + .slider {
+            box-shadow: var(--toggle-slider-checked-shadow);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px); /* Adjust based on new width */
+        }
+
+        /* Custom Dropdown (for Win Rate Setting) */
+        .custom-select {
+            position: relative;
+            font-family: 'Inter', sans-serif;
+            width: 130px !important; /* Fixed width */
+        }
+
+        .custom-select select {
+            display: none;
+        }
+
+        .select-selected {
+            background-color: var(--select-selected-bg);
+            padding: 10px 18px; /* Adjusted padding */
+            border: var(--select-selected-border);
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer;
+            user-select: none;
+            text-align: left;
+            padding-right: 35px;
+            color: var(--select-items-text-color);
+            font-size: 0.95em;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .select-selected:hover {
+            border-color: var(--primary-blue);
+        }
+
+        .select-selected.select-arrow-active,
+        .select-selected:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+
+        .select-selected:after {
+            position: absolute;
+            content: "\f0d7"; /* FontAwesome caret-down icon */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            color: var(--select-arrow-color);
+            pointer-events: none; /* Ensure clicks go through to the parent */
+            transition: transform 0.2s ease;
+        }
+
+        .select-selected.select-arrow-active:after {
+            transform: translateY(-50%) rotate(180deg); /* Rotate caret up */
+        }
+
+        .select-items {
+            position: absolute;
+            background-color: var(--select-items-bg);
+            top: calc(100% + 5px); /* Position slightly below */
+            left: 0;
+            right: 0;
+            z-index: 99;
+            border: var(--select-items-border);
+            border-radius: 8px;
+            max-height: 180px; /* Increased max height */
+            overflow-y: auto;
+            box-shadow: var(--select-items-shadow);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+        }
+        .select-items.select-show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .select-items div {
+            padding: 10px 18px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color-light); /* Themed border */
+            font-size: 0.95em;
+            color: var(--select-items-text-color);
+            transition: background-color 0.2s ease;
+        }
+
+        body.dark-theme .select-items div {
+            border-bottom: 1px solid var(--border-color-dark);
+        }
+
+        .select-items div:last-child {
+            border-bottom: none;
+        }
+
+        .select-items div:hover, .same-as-selected {
+            background-color: var(--select-items-hover-bg);
+        }
+         .same-as-selected {
+            font-weight: 500; /* Highlight selected item */
+        }
+
+
+        .select-hide {
+            display: none;
+        }
+
+        .settings-footer {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 25px;
+            border-top: var(--settings-footer-border);
+            margin-top: auto; /* Push to bottom */
+        }
+
+        .settings-footer button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            width: 48%;
+        }
+
+        .settings-footer .close-settings-btn {
+            background-color: var(--button-secondary-bg);
+            color: white;
+        }
+
+        .settings-footer .close-settings-btn:hover {
+            background-color: var(--button-secondary-hover-bg);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.2);
+        }
+
+        .settings-footer .save-settings-btn {
+            background-color: var(--button-primary-bg);
+            color: white;
+        }
+
+        .settings-footer .save-settings-btn:hover {
+            background-color: var(--button-primary-hover-bg);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        }
+
+        /* --- Admin Panel Specific Styles --- */
+        /* These ensure admin panel elements also respect the theme */
+        .admin-card {
+            background-color: var(--main-card-bg);
+            box-shadow: var(--main-card-shadow);
+            border-radius: 12px;
+            border: var(--card-border);
+            padding: 25px;
+        }
+
+        .admin-card-header {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: var(--input-text-color); /* Themed text color */
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color-light); /* Themed border */
+        }
+
+        body.dark-theme .admin-card-header {
+             border-bottom: 1px solid var(--border-color-dark);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            position: relative; /* For error messages */
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--input-text-color); /* Themed text color */
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group input[type="number"],
+        .form-group input[type="datetime-local"],
+        .form-group select {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: var(--input-border);
+            background-color: var(--input-bg);
+            color: var(--input-text-color); /* Themed text color */
+            font-size: 1em;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="password"]:focus,
+        .form-group input[type="number"]:focus,
+        .form-group input[type="datetime-local"]:focus,
+        .form-group select:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+            outline: none;
+        }
+
+        /* Validation Error Styles */
+        .form-group input.error,
+        .form-group select.error {
+            border-color: var(--error-text-color);
+        }
+
+        .error-message {
+            color: var(--error-text-color);
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: block;
+            position: absolute;
+            bottom: -20px; /* Position below input */
+            left: 0;
+            white-space: nowrap; /* Prevent wrapping for short messages */
+        }
+
+
+        .admin-button.primary {
+            background-color: var(--button-primary-bg);
+            color: white;
+        }
+        .admin-button.primary:hover {
+            background-color: var(--button-primary-hover-bg);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        }
+
+        .admin-button.danger {
+            background-color: var(--button-danger-bg);
+            color: white;
+        }
+        .admin-button.danger:hover {
+            background-color: var(--button-danger-hover-bg);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+        }
+        .admin-button.secondary {
+            background-color: var(--button-secondary-bg);
+            color: white;
+        }
+        .admin-button.secondary:hover {
+            background-color: var(--button-secondary-hover-bg);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.2);
+        }
+
+
+        .admin-button.success {
+            background-color: var(--button-success-bg);
+            color: white;
+        }
+        .admin-button.success:hover {
+            background-color: var(--button-success-hover-bg);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);
+        }
+
+        .token-list, .ban-list, .user-list, .token-price-list {
+            margin-top: 20px;
+        }
+
+        .token-list-item, .ban-list-item, .user-list-item, .token-price-list-item {
+            background-color: var(--input-bg);
+            border: var(--input-border);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping for responsiveness */
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95em;
+            color: var(--input-text-color); /* Themed text color */
+        }
+        .token-list-item:last-child, .ban-list-item:last-child, .user-list-item:last-child, .token-price-list-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .token-info, .ban-info, .user-info, .price-info {
+            flex-basis: 70%; /* Take up more space */
+            min-width: 200px; /* Ensure info doesn't get too small */
+        }
+        .token-info span, .ban-info span, .user-info span, .price-info span {
+            display: block;
+            margin-bottom: 5px;
+            word-break: break-all; /* Allow long tokens to break */
+        }
+        .token-info span:last-child, .ban-info span:last-child, .user-info span:last-child, .price-info span:last-child {
+            margin-bottom: 0;
+        }
+
+        .token-actions, .ban-actions, .user-actions, .price-actions {
+            flex-basis: 25%; /* Take up remaining space */
+            min-width: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-left: 10px; /* Spacing from info */
+        }
+        @media (max-width: 480px) {
+            .token-info, .ban-info, .user-info, .price-info,
+            .token-actions, .ban-actions, .user-actions, .price-actions {
+                flex-basis: 100%;
+                margin-left: 0;
+            }
+            .token-actions button, .ban-actions button, .user-actions button, .price-actions button {
+                width: 100%;
+            }
+        }
+
+
+        .token-info .status.active { color: var(--success-green); }
+        .token-info .status.expired { color: orange; }
+        .token-info .status.inactive { color: var(--danger-red); }
+        .ban-info .status.active { color: var(--danger-red); }
+        .ban-info .status.inactive { color: var(--success-green); }
+
+        .user-info .role-admin { color: var(--primary-blue); font-weight: 600;}
+        .user-info .role-reseller { color: var(--info-blue); font-weight: 600;}
+        .user-info .balance { color: var(--success-green); font-weight: 600;}
+
+        /* Hide main app sections when admin panel is active */
+        body.admin-mode .main-content {
+            display: none;
+        }
+        body.admin-mode .admin-main-content {
+            display: grid; /* Show admin content */
+        }
+        body:not(.admin-mode) .admin-main-content {
+            display: none; /* Hide admin content by default */
+        }
+        body:not(.admin-mode) .main-content {
+            display: grid; /* Show main content by default */
+        }
+        /* Adjust header buttons based on mode */
+        body.admin-mode #adminDashboardBtn { display: none; }
+        body.admin-mode #backToClientBtn { display: inline-flex; }
+        body:not(.admin-mode) #adminDashboardBtn { display: inline-flex; }
+        body:not(.admin-mode) #backToClientBtn { display: none; }
+
+        /* --- Modal Styles --- */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1001; /* Sit on top of everything */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.3s forwards;
+        }
+
+        .modal-content {
+            background-color: var(--main-card-bg);
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+            border: var(--card-border);
+            box-shadow: var(--main-card-shadow);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            animation: slideIn 0.3s forwards;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color-light);
+            color: var(--text-color-light);
+        }
+        body.dark-theme .modal-header {
+            border-bottom: 1px solid var(--border-color-dark);
+            color: var(--text-color-dark);
+        }
+
+        .modal-header h2 {
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        .modal .close-btn {
+            color: var(--subtle-text-color-light);
+            font-size: 2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .modal .close-btn:hover,
+        .modal .close-btn:focus {
+            color: var(--text-color-light);
+            text-decoration: none;
+        }
+        body.dark-theme .modal .close-btn {
+            color: var(--subtle-text-color-dark);
+        }
+        body.dark-theme .modal .close-btn:hover,
+        body.dark-theme .modal .close-btn:focus {
+            color: var(--text-color-dark);
+        }
+
+
+        .modal-footer {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        body.dark-theme .modal-footer {
+            border-top: 1px solid var(--border-color-dark);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* --- Loading Spinner --- */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
+            z-index: 1002; /* Above modals */
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(2px); /* Subtle blur effect */
+            -webkit-backdrop-filter: blur(2px);
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid var(--primary-blue); /* The color of the spinner */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* UI/UX: Subtle hover effect for list items */
+        .token-list-item:hover,
+        .ban-list-item:hover,
+        .user-list-item:hover,
+        .token-price-list-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: var(--input-bg-light); /* Slight change on hover */
+        }
+        body.dark-theme .token-list-item:hover,
+        body.dark-theme .ban-list-item:hover,
+        body.dark-theme .user-list-item:hover,
+        body.dark-theme .token-price-list-item:hover {
+            background-color: var(--input-bg-dark);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+        .token-list-item, .ban-list-item, .user-list-item, .token-price-list-item {
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-check-circle v-icon"></i> HAFIZH STORE
+        </div>
+        <div class="header-actions">
+            <button class="menu-button" id="loginLogoutBtn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            <button class="menu-button" id="adminDashboardBtn" onclick="toggleAdminMode(true)">
+                <i class="fas fa-user-shield"></i> Admin Panel
+            </button>
+            <button class="menu-button" id="backToClientBtn" onclick="toggleAdminMode(false)">
+                <i class="fas fa-arrow-left"></i> Client App
+            </button>
+        </div>
+    </div>
+
+    <div class="main-content" id="clientAppContent">
+        <div class="input-section">
+            <div class="input-wrapper">
+                <i class="fas fa-key icon"></i>
+                <input type="password" id="tokenInput" placeholder="Put your Token here...">
+                <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+            <button class="start-button" id="startButton">START</button>
+            <button class="menu-button" onclick="openSettings()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="card" id="teamCard">
+            <div class="card-header team">
+                <span class="star-icon">&#9733;</span> TEAM
+            </div>
+            <div class="card-content" id="teamTableContent">
+                <div class="waiting-text">Enter your token and click START to see data.</div>
+            </div>
+        </div>
+
+        <div class="card" id="enemyCard">
+            <div class="card-header enemy">
+                <span class="star-icon">&#9733;</span> ENEMY
+            </div>
+            <div class="card-content" id="enemyTableContent">
+                <div class="waiting-text">Enter your token and click START to see data.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-main-content" id="adminPanelContent">
+        <div class="admin-card" id="loginCard" style="display: none; grid-column: 1 / -1; max-width: 400px; margin: auto;">
+            <div class="admin-card-header">Login</div>
+            <div class="form-group">
+                <label for="loginUsername">Username</label>
+                <input type="text" id="loginUsername" placeholder="Enter username">
+                <span class="error-message" id="loginUsernameError"></span>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter password">
+                <span class="error-message" id="loginPasswordError"></span>
+            </div>
+            <button class="admin-button primary" onclick="handleLogin()">Login</button>
+        </div>
+
+        <div class="admin-card" id="tokenCreateCard">
+            <div class="admin-card-header">Create New Token</div>
+            <div class="form-group" id="resellerBalanceDisplayContainer" style="display: none;">
+                <label>Current Balance:</label>
+                <span id="resellerBalanceDisplay" style="font-weight: bold; color: var(--success-green);">Rp 0.00</span>
+            </div>
+            <div class="form-group">
+                <label for="newTokenString">Token String (Optional)</label>
+                <input type="text" id="newTokenString" placeholder="e.g., KSDHF-89823-SDHFJ">
+                <span class="error-message" id="newTokenStringError"></span>
+            </div>
+            <div class="form-group">
+                <label for="tokenDuration">Duration (Days)</label>
+                <select id="tokenDuration">
+                    </select>
+                <span class="error-message" id="tokenDurationError"></span>
+            </div>
+            <div class="form-group">
+                <label for="maxDevices">Maximum Devices</label>
+                <input type="number" id="maxDevices" value="1" min="1">
+                <span class="error-message" id="maxDevicesError"></span>
+            </div>
+            <div class="form-group">
+                <label for="tokenPriceDisplay">Price:</label>
+                <span id="tokenPriceDisplay" style="font-weight: bold; color: var(--info-text-color);">Rp 0.00</span>
+            </div>
+            <button class="admin-button primary" onclick="createNewToken()">Create Token</button>
+        </div>
+
+        <div class="admin-card" id="manageTokensCard">
+            <div class="admin-card-header">Manage Tokens</div>
+            <div class="token-list" id="tokenList">
+                <div class="waiting-text">Loading tokens...</div>
+            </div>
+        </div>
+
+        <div class="admin-card" id="banManagementCard">
+            <div class="admin-card-header">Ban Management</div>
+            <div class="form-group">
+                <label for="banEntityType">Ban By:</label>
+                <select id="banEntityType">
+                    <option value="token">Token</option>
+                    <option value="uid">User ID</option>
+                    <option value="ip">IP Address</option>
+                </select>
+                <span class="error-message" id="banEntityTypeError"></span>
+            </div>
+            <div class="form-group">
+                <label for="banEntityValue">Value to Ban</label>
+                <input type="text" id="banEntityValue" placeholder="Token, User ID, or IP">
+                <span class="error-message" id="banEntityValueError"></span>
+            </div>
+            <div class="form-group">
+                <label for="banReason">Reason</label>
+                <input type="text" id="banReason" placeholder="e.g., Cheating, Abuse">
+                <span class="error-message" id="banReasonError"></span>
+            </div>
+             <div class="form-group">
+                <label for="banDuration">Duration (days, leave empty for permanent)</label>
+                <input type="number" id="banDuration" placeholder="e.g., 7 for 7 days" min="1">
+                <span class="error-message" id="banDurationError"></span>
+            </div>
+            <button class="admin-button danger" onclick="applyBan()">Apply Ban</button>
+
+            <div class="ban-list" id="banList">
+                <div class="waiting-text">Loading ban list...</div>
+            </div>
+        </div>
+
+        <div class="admin-card" id="userManagementCard">
+            <div class="admin-card-header">User Management</div>
+            <div class="form-group">
+                <label for="newUsername">Username</label>
+                <input type="text" id="newUsername" placeholder="e.g., reseller_one">
+                <span class="error-message" id="newUsernameError"></span>
+            </div>
+            <div class="form-group">
+                <label for="newPassword">Password</label>
+                <input type="password" id="newPassword" placeholder="e.g., securepass123">
+                <span class="error-message" id="newPasswordError"></span>
+            </div>
+            <div class="form-group">
+                <label for="newUserRole">Role</label>
+                <select id="newUserRole">
+                    <option value="reseller">Reseller</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <span class="error-message" id="newUserRoleError"></span>
+            </div>
+            <button class="admin-button success" onclick="createNewUser()">Create User</button>
+
+            <div class="user-list" id="userList">
+                <div class="waiting-text">Loading users...</div>
+            </div>
+        </div>
+
+        <div class="admin-card" id="tokenPricingCard">
+            <div class="admin-card-header">Manage Token Prices</div>
+            <div class="form-group">
+                <label for="newPriceDuration">Duration (Days)</label>
+                <input type="number" id="newPriceDuration" placeholder="e.g., 7" min="1">
+                <span class="error-message" id="newPriceDurationError"></span>
+            </div>
+            <div class="form-group">
+                <label for="newPriceAmount">Price (Rp)</label>
+                <input type="number" id="newPriceAmount" placeholder="e.g., 50000" min="0.01" step="0.01">
+                <span class="error-message" id="newPriceAmountError"></span>
+            </div>
+            <button class="admin-button success" onclick="addUpdateTokenPrice()">Add/Update Price</button>
+
+            <div class="token-price-list" id="tokenPriceList">
+                <div class="waiting-text">Loading token prices...</div>
+            </div>
+        </div>
+
+        <div class="admin-card" id="addBalanceCard">
+            <div class="admin-card-header">Add Balance to Reseller</div>
+            <div class="form-group">
+                <label for="resellerToFund">Select Reseller</label>
+                <select id="resellerToFund">
+                    </select>
+                <span class="error-message" id="resellerToFundError"></span>
+            </div>
+            <div class="form-group">
+                <label for="amountToAdd">Amount (Rp)</label>
+                <input type="number" id="amountToAdd" placeholder="e.g., 100000" min="1">
+                <span class="error-message" id="amountToAddError"></span>
+            </div>
+            <button class="admin-button primary" onclick="addBalanceToReseller()">Add Balance</button>
+        </div>
+
+    </div>
+
+    <div class="overlay" onclick="closeSettings()"></div>
+
+    <div class="settings-sidebar" id="settingsSidebar">
+        <div class="settings-header">
+            <h2>SETTINGS</h2>
+            <button class="close-btn" onclick="closeSettings()">&times;</button>
+        </div>
+
+        <div class="settings-content-wrapper">
+            <div class="setting-group">
+                <h3>Theme Setting:</h3>
+                <div class="setting-item">
+                    <label>Theme</label>
+                    <div class="custom-select">
+                        <select id="themeSelect">
+                            <option value="default">Default</option>
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <h3>Config Setting:</h3>
+                <div class="setting-item">
+                    <label for="autoReady">Auto Ready</label>
+                    <label class="switch">
+                        <input type="checkbox" id="autoReady" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <h3>Table Setting:</h3>
+                <div class="setting-item">
+                    <label for="showEnemyOnly">Show Enemy Only</label>
+                    <label class="switch">
+                        <input type="checkbox" id="showEnemyOnly">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label for="showBattleCount">Show Battle Count</label>
+                    <label class="switch">
+                        <input type="checkbox" id="showBattleCount">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <h3>Win Rate Setting:</h3>
+                <div class="setting-item">
+                    <label>Win Rate</label>
+                    <div class="custom-select">
+                        <select id="winRateSelect">
+                            <option value="all">All</option>
+                            <option value="total">Total</option>
+                            <option value="rank">Rank</option>
+                            <option value="classic">Classic</option>
+                            <option value="brawl">Brawl</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-footer">
+            <button class="close-settings-btn" onclick="closeSettings()">Close</button>
+            <button class="save-settings-btn" id="saveSettingsButton">Save</button>
+        </div>
+    </div>
+
+    <div id="editTokenModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Token</h2>
+                <span class="close-btn" onclick="closeEditTokenModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editTokenId">
+                <div class="form-group">
+                    <label for="editTokenString">Token String</label>
+                    <input type="text" id="editTokenString">
+                    <span class="error-message" id="editTokenStringError"></span>
+                </div>
+                <div class="form-group">
+                    <label for="editExpiresAt">Expires At</label>
+                    <input type="datetime-local" id="editExpiresAt">
+                    <span class="error-message" id="editExpiresAtError"></span>
+                </div>
+                <div class="form-group">
+                    <label for="editMaxDevices">Maximum Devices</label>
+                    <input type="number" id="editMaxDevices" min="1">
+                    <span class="error-message" id="editMaxDevicesError"></span>
+                </div>
+                <div class="form-group">
+                    <label for="editIsActive">Is Active</label>
+                    <label class="switch">
+                        <input type="checkbox" id="editIsActive">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="admin-button secondary" onclick="closeEditTokenModal()">Cancel</button>
+                <button class="admin-button primary" onclick="saveEditedToken()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <script>
+        // --- Dummy Data (Simulasi API Response) ---
+        const dummyTeamData = [
+            { uid: '123456789', name: 'Player One', squad: 'ALPHA', rank: 'Legend', totalWinRate: '65%', rankWinRate: '70%', classicWinRate: '60%', brawlWinRate: '55%', battleCount: '1500' },
+            { uid: '987654321', name: 'Player Two', squad: 'ALPHA', rank: 'Mythic', totalWinRate: '72%', rankWinRate: '75%', classicWinRate: '68%', brawlWinRate: '70%', battleCount: '2500' },
+            { uid: '112233445', name: 'Player Three', squad: 'ALPHA', rank: 'Epic', totalWinRate: '58%', rankWinRate: '60%', classicWinRate: '55%', brawlWinRate: '62%', battleCount: '800' },
+            { uid: '556677889', name: 'Player Four', squad: 'ALPHA', rank: 'Legend', totalWinRate: '68%', rankWinRate: '72%', classicWinRate: '65%', brawlWinRate: '60%', battleCount: '1800' },
+            { uid: '998877665', name: 'Player Five', squad: 'ALPHA', rank: 'Mythic', totalWinRate: '75%', rankWinRate: '80%', classicWinRate: '70%', brawlWinRate: '72%', battleCount: '3000' }
+        ];
+
+        const dummyEnemyData = [
+            { uid: '100100100', name: 'Enemy One', squad: 'BETA', rank: 'Mythic', totalWinRate: '80%', rankWinRate: '85%', classicWinRate: '78%', brawlWinRate: '75%', battleCount: '2800' },
+            { uid: '200200200', name: 'Enemy Two', squad: 'BETA', rank: 'Legend', totalWinRate: '60%', rankWinRate: '62%', classicWinRate: '58%', brawlWinRate: '65%', battleCount: '1200' },
+            { uid: '300300300', name: 'Enemy Three', squad: 'BETA', rank: 'Epic', totalWinRate: '52%', rankWinRate: '55%', classicWinRate: '50%', brawlWinRate: '58%', battleCount: '700' },
+            { uid: '400400400', name: 'Enemy Four', squad: 'BETA', rank: 'Mythic', totalWinRate: '70%', rankWinRate: '73%', classicWinRate: '67%', brawlWinRate: '68%', battleCount: '2000' },
+            { uid: '500500500', name: 'Enemy Five', squad: 'BETA', rank: 'Legend', totalWinRate: '78%', rankWinRate: '80%', classicWinRate: '75%', brawlWinRate: '72%', battleCount: '1900' }
+        ];
+
+        // --- Admin Dummy Data (Simulasi Backend) ---
+        let users = [
+            // AKUN ADMIN ANDA:
+            { id: 'usr_HAFIZHSTORE_admin', username: 'ADMINHAFIZHSTORE', password: 'Indopride222@', role: 'admin', balance: 0 },
+        ];
+
+        let tokens = [
+
+        ];
+
+        let bans = [
+
+        ];
+
+        let tokenPrices = [
+            { id: 'tp_7d', duration_days: 7, price: 50000 },
+            { id: 'tp_30d', duration_days: 30, price: 150000 },
+            { id: 'tp_90d', duration_days: 90, price: 400000 }
+        ];
+
+        // --- Current User/Auth State (Simulasi) ---
+        let currentUser = null; // Stores { id: ..., username: ..., role: ..., balance: ... }
+
+        // --- DOM Elements (Client App) ---
+        const tokenInput = document.getElementById('tokenInput');
+        const togglePassword = document.getElementById('togglePassword');
+        const startButton = document.getElementById('startButton');
+        const teamCard = document.getElementById('teamCard');
+        const enemyCard = document.getElementById('enemyCard');
+        const teamTableContent = document.getElementById('teamTableContent');
+        const enemyTableContent = document.getElementById('enemyTableContent');
+        const overlay = document.querySelector(".overlay");
+        const clientAppContent = document.getElementById('clientAppContent');
+
+        // DOM Elements (Settings Sidebar)
+        const autoReadyToggle = document.getElementById('autoReady');
+        const showEnemyOnlyToggle = document.getElementById('showEnemyOnly');
+        const showBattleCountToggle = document.getElementById('showBattleCount');
+        const saveSettingsButton = document.getElementById('saveSettingsButton');
+        const themeSelect = document.getElementById('themeSelect');
+        const winRateSelect = document.getElementById('winRateSelect');
+
+        // DOM Elements (Admin Panel)
+        const adminPanelContent = document.getElementById('adminPanelContent');
+        const loginCard = document.getElementById('loginCard');
+        const loginUsernameInput = document.getElementById('loginUsername');
+        const loginPasswordInput = document.getElementById('loginPassword');
+        const loginLogoutBtn = document.getElementById('loginLogoutBtn');
+
+        // Admin - Token Management
+        const tokenCreateCard = document.getElementById('tokenCreateCard');
+        const resellerBalanceDisplayContainer = document.getElementById('resellerBalanceDisplayContainer'); // New container
+        const resellerBalanceDisplay = document.getElementById('resellerBalanceDisplay'); // New element
+        const newTokenStringInput = document.getElementById('newTokenString');
+        const tokenDurationSelect = document.getElementById('tokenDuration');
+        const maxDevicesInput = document.getElementById('maxDevices');
+        const tokenPriceDisplay = document.getElementById('tokenPriceDisplay');
+        const tokenListDiv = document.getElementById('tokenList');
+
+        // Admin - Ban Management
+        const banManagementCard = document.getElementById('banManagementCard');
+        const banEntityTypeSelect = document.getElementById('banEntityType');
+        const banEntityValueInput = document.getElementById('banEntityValue');
+        const banReasonInput = document.getElementById('banReason');
+        const banDurationInput = document.getElementById('banDuration');
+        const banListDiv = document.getElementById('banList');
+
+        // Admin - User Management
+        const userManagementCard = document.getElementById('userManagementCard');
+        const newUsernameInput = document.getElementById('newUsername');
+        const newPasswordInput = document.getElementById('newPassword');
+        const newUserRoleSelect = document.getElementById('newUserRole');
+        const userListDiv = document.getElementById('userList');
+
+        // Admin - Token Pricing Management
+        const tokenPricingCard = document.getElementById('tokenPricingCard');
+        const newPriceDurationInput = document.getElementById('newPriceDuration');
+        const newPriceAmountInput = document.getElementById('newPriceAmount');
+        const tokenPriceListDiv = document.getElementById('tokenPriceList');
+
+        // Admin - Add Balance
+        const addBalanceCard = document.getElementById('addBalanceCard');
+        const resellerToFundSelect = document.getElementById('resellerToFund');
+        const amountToAddInput = document.getElementById('amountToAdd');
+
+        // Edit Token Modal Elements
+        const editTokenModal = document.getElementById('editTokenModal');
+        const editTokenIdInput = document.getElementById('editTokenId');
+        const editTokenStringInput = document.getElementById('editTokenString');
+        const editExpiresAtInput = document.getElementById('editExpiresAt');
+        const editMaxDevicesInput = document.getElementById('editMaxDevices');
+        const editIsActiveToggle = document.getElementById('editIsActive');
+
+        // Global Loading Overlay
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+
+        // --- Global variable to store last fetched data for client app ---
+        let lastFetchedData = { team: [], enemy: [] };
+
+        // --- Utility Functions ---
+        function generateId(prefix = 'id_') {
+            return prefix + Math.random().toString(36).substr(2, 9);
+        }
+
+        function formatDate(dateString, includeTime = true) {
+            if (!dateString) return 'Never';
+            const date = new Date(dateString);
+            if (isNaN(date)) return 'Invalid Date';
+
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            if (includeTime) {
+                options.hour = '2-digit';
+                options.minute = '2-digit';
+                options.second = '2-digit';
+                options.hour12 = false; // 24-hour format
+            }
+            return date.toLocaleString('en-GB', options); // Using en-GB for DD/MM/YYYY HH:MM:SS format
+        }
+
+        // Format date to YYYY-MM-DDTHH:MM for datetime-local input
+        function formatToDatetimeLocal(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            if (isNaN(date)) return '';
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
+
+        function formatCurrency(amount) {
+            return `Rp ${amount.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        // --- Loading Indicator Functions ---
+        function showLoading() {
+            loadingOverlay.style.display = 'flex';
+        }
+
+        function hideLoading() {
+            loadingOverlay.style.display = 'none';
+        }
+
+        // --- Input Validation Helper Functions ---
+        function showError(elementId, message) {
+            const inputElement = document.getElementById(elementId);
+            const errorSpan = document.getElementById(elementId + 'Error');
+            if (inputElement) {
+                inputElement.classList.add('error');
+            }
+            if (errorSpan) {
+                errorSpan.textContent = message;
+            }
+        }
+
+        function clearError(elementId) {
+            const inputElement = document.getElementById(elementId);
+            const errorSpan = document.getElementById(elementId + 'Error');
+            if (inputElement) {
+                inputElement.classList.remove('error');
+            }
+            if (errorSpan) {
+                errorSpan.textContent = '';
+            }
+        }
+
+        // Clear all errors from a specific card
+        function clearAllErrorsInCard(cardId) {
+            const card = document.getElementById(cardId);
+            if (card) {
+                card.querySelectorAll('.error-message').forEach(span => span.textContent = '');
+                card.querySelectorAll('input.error, select.error').forEach(input => input.classList.remove('error'));
+            }
+        }
+
+
+        // --- Token Visibility Toggle Logic ---
+        togglePassword.addEventListener('click', function () {
+            const type = tokenInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            tokenInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // --- Helper Function to Render Table Rows for Client App ---
+        function renderTableRows(containerElement, data, showBattleCount, winRateType) {
+            let headerHtml = `
+                <div class="table-header">
+                    <div>UID</div>
+                    <div>NAME</div>
+                    <div>SQUAD</div>
+                    <div>RANK</div>
+                    <div class="win-rates">WIN RATES</div>
+                    ${showBattleCount ? '<div class="battle-count">BATTLE COUNT</div>' : ''}
+                </div>
+            `;
+            containerElement.innerHTML = headerHtml;
+
+            if (!data || data.length === 0) {
+                const waitingText = document.createElement('div');
+                waitingText.className = 'waiting-text';
+                waitingText.textContent = 'Waiting...';
+                containerElement.appendChild(waitingText);
+                return;
+            }
+
+            data.forEach(player => {
+                let displayedWinRate = '';
+                switch (winRateType) {
+                    case 'total':
+                        displayedWinRate = player.totalWinRate || '-';
+                        break;
+                    case 'rank':
+                        displayedWinRate = player.rankWinRate || '-';
+                        break;
+                    case 'classic':
+                        displayedWinRate = player.classicWinRate || '-';
+                        break;
+                    case 'brawl':
+                        displayedWinRate = player.brawlWinRate || '-';
+                        break;
+                    case 'all':
+                    default:
+                        displayedWinRate = player.totalWinRate || '-';
+                        break;
+                }
+
+                const row = document.createElement('div');
+                row.className = 'table-row';
+                row.innerHTML = `
+                    <div>${player.uid}</div>
+                    <div>${player.name}</div>
+                    <div>${player.squad}</div>
+                    <div>${player.rank}</div>
+                    <div class="win-rate-data">${displayedWinRate}</div>
+                    ${showBattleCount ? `<div class="battle-count-data">${player.battleCount}</div>` : ''}
+                `;
+                containerElement.appendChild(row);
+            });
+        }
+
+        // --- Simulate API Call (fetchData for Client App) ---
+        async function fetchData(token) {
+            console.log("Simulating API call with token:", token);
+            showLoading(); // Show loading indicator
+
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    hideLoading(); // Hide loading indicator
+                    const foundToken = tokens.find(t => t.token_string === token);
+                    if (!foundToken) {
+                        return reject(new Error("Token tidak ditemukan."));
+                    }
+
+                    if (!foundToken.is_active) {
+                        return reject(new Error("Token tidak aktif."));
+                    }
+
+                    if (foundToken.expires_at && new Date(foundToken.expires_at) < new Date()) {
+                        return reject(new Error("Token sudah kadaluarsa."));
+                    }
+
+                    const isBanned = bans.some(ban =>
+                        ban.is_active &&
+                        (
+                            (ban.entity_type === 'token' && ban.entity_value === token) ||
+                            (ban.entity_type === 'uid' && dummyTeamData.concat(dummyEnemyData).some(p => p.uid === ban.entity_value)) // Simple UID check
+                            // IP check would require actual client IP, not simulated
+                        )
+                    );
+                    if (isBanned) {
+                        return reject(new Error("Token ini diblokir atau terkait dengan ban."));
+                    }
+
+                    resolve({
+                        team: dummyTeamData,
+                        enemy: dummyEnemyData
+                    });
+                }, 1500);
+            });
+        }
+
+        // --- Event Listener for START button ---
+        startButton.addEventListener('click', async () => {
+            const token = tokenInput.value.trim();
+            const currentSettings = getSettings();
+
+            localStorage.setItem('hylosToken', token); // Store the token
+
+            if (!token) {
+                alert('Silakan masukkan token untuk memulai!');
+                return;
+            }
+
+            // Show "Loading..." text with appropriate headers
+            const commonHeaderHtml = `
+                <div class="table-header">
+                    <div>UID</div>
+                    <div>NAME</div>
+                    <div>SQUAD</div>
+                    <div>RANK</div>
+                    <div class="win-rates">WIN RATES</div>
+                    ${currentSettings.showBattleCount ? '<div class="battle-count">BATTLE COUNT</div>' : ''}
+                </div>
+            `;
+            teamTableContent.innerHTML = `${commonHeaderHtml}<div class="waiting-text">Memuat data...</div>`;
+            enemyTableContent.innerHTML = `${commonHeaderHtml}<div class="waiting-text">Memuat data...</div>`;
+            startButton.disabled = true;
+
+            try {
+                const data = await fetchData(token);
+                lastFetchedData = data; // Store the fetched data
+                applyAllSettings(currentSettings, lastFetchedData); // Apply settings with the new data
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                teamTableContent.innerHTML = `${commonHeaderHtml}<div class="waiting-text" style="color: var(--danger-red);">Error: ${error.message}</div>`;
+                enemyTableContent.innerHTML = `${commonHeaderHtml}<div class="waiting-text" style="color: var(--danger-red);">Error: ${error.message}</div>`;
+                alert(`Gagal memulai: ${error.message}`);
+            } finally {
+                startButton.disabled = false;
+            }
+        });
+
+        // --- Settings Sidebar Logic ---
+        function openSettings() {
+            document.getElementById("settingsSidebar").classList.add("open");
+            overlay.classList.add("visible");
+            loadSettings(); // Load settings when opening
+        }
+
+        function closeSettings() {
+            document.getElementById("settingsSidebar").classList.remove("open");
+            overlay.classList.remove("visible");
+            setTimeout(() => { overlay.style.display = "none"; }, 400);
+        }
+
+        // --- Settings Management ---
+        function getSettings() {
+            return {
+                autoReady: autoReadyToggle.checked,
+                showEnemyOnly: showEnemyOnlyToggle.checked,
+                showBattleCount: showBattleCountToggle.checked,
+                theme: themeSelect.value,
+                winRate: winRateSelect.value
+            };
+        }
+
+        function saveSettings() {
+            const settings = getSettings();
+            localStorage.setItem('hylosSettings', JSON.stringify(settings));
+            alert('Pengaturan berhasil disimpan!');
+            console.log('Pengaturan yang disimpan:', settings);
+            applyAllSettings(settings, lastFetchedData);
+            closeSettings();
+        }
+
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('hylosSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                autoReadyToggle.checked = settings.autoReady;
+                showEnemyOnlyToggle.checked = settings.showEnemyOnly;
+                showBattleCountToggle.checked = settings.showBattleCount;
+                themeSelect.value = settings.theme;
+                winRateSelect.value = settings.winRate;
+
+                // Update custom select display after setting values
+                updateCustomSelectDisplay(themeSelect);
+                updateCustomSelectDisplay(winRateSelect);
+
+                console.log('Pengaturan yang dimuat:', settings);
+                applyAllSettings(getSettings(), lastFetchedData);
+            } else {
+                console.log('Tidak ada pengaturan yang tersimpan, menggunakan nilai default.');
+                autoReadyToggle.checked = true;
+                showEnemyOnlyToggle.checked = false;
+                showBattleCountToggle.checked = false;
+                themeSelect.value = 'default';
+                winRateSelect.value = 'all';
+
+                updateCustomSelectDisplay(themeSelect);
+                updateCustomSelectDisplay(winRateSelect);
+
+                applyAllSettings(getSettings(), lastFetchedData);
+            }
+        }
+
+        // --- Apply Theme ---
+        function applyTheme(themeName) {
+            const body = document.body;
+            body.classList.remove('light-theme', 'dark-theme');
+
+            if (themeName === 'dark') {
+                body.classList.add('dark-theme');
+            } else {
+                body.classList.add('light-theme');
+            }
+        }
+
+        // --- Apply Table Settings (Visibility) ---
+        function applyTableSettings(settings) {
+            if (settings.showEnemyOnly) {
+                teamCard.classList.add('hidden-card');
+                enemyCard.classList.remove('hidden-card');
+            } else {
+                teamCard.classList.remove('hidden-card');
+                enemyCard.classList.remove('hidden-card');
+            }
+        }
+
+        // --- Combined function to apply all settings (Client App) ---
+        function applyAllSettings(settings, dataToRender) {
+            applyTableSettings(settings);
+            renderTableRows(teamTableContent, dataToRender.team, settings.showBattleCount, settings.winRate);
+            renderTableRows(enemyTableContent, dataToRender.enemy, settings.showBattleCount, settings.winRate);
+            applyTheme(settings.theme);
+        }
+
+        // Event listener for the Save button
+        saveSettingsButton.addEventListener('click', saveSettings);
+
+        // --- Custom Dropdown Logic (Copied and slightly adjusted for robustness) ---
+        function initializeCustomSelects() {
+            var x, i, j, l, ll, selElmnt, a, b, c;
+            /*look for any elements with the class "custom-select":*/
+            x = document.getElementsByClassName("custom-select");
+            l = x.length;
+            for (i = 0; i < l; i++) {
+                selElmnt = x[i].getElementsByTagName("select")[0];
+                ll = selElmnt.length;
+                /*create a new DIV that will act as the selected item:*/
+                a = document.createElement("DIV");
+                a.setAttribute("class", "select-selected");
+                a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+                x[i].appendChild(a);
+                /*create a new DIV that will contain the option list:*/
+                b = document.createElement("DIV");
+                b.setAttribute("class", "select-items select-hide");
+                for (j = 0; j < ll; j++) {
+                    /*for each option in the original select element,
+                    create a new DIV that will act as an option item:*/
+                    c = document.createElement("DIV");
+                    c.innerHTML = selElmnt.options[j].innerHTML;
+                    c.addEventListener("click", function(e) {
+                        /*when an item is clicked, update the original select box,
+                        and the selected item:*/
+                        var y, i, k, s, h, sl, yl;
+                        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+                        sl = s.length;
+                        h = this.parentNode.previousSibling;
+                        for (i = 0; i < sl; i++) {
+                            if (s.options[i].innerHTML == this.innerHTML) {
+                                s.selectedIndex = i;
+                                h.innerHTML = this.innerHTML;
+                                y = this.parentNode.getElementsByClassName("same-as-selected");
+                                yl = y.length;
+                                for (k = 0; k < yl; k++) {
+                                    y[k].removeAttribute("class");
+                                }
+                                this.setAttribute("class", "same-as-selected");
+                                break;
+                            }
+                        }
+                        h.click(); // This closes the dropdown and triggers the next part
+                        // After changing the dropdown value, re-apply settings
+                        applyAllSettings(getSettings(), lastFetchedData);
+                    });
+                    b.appendChild(c);
+                }
+                x[i].appendChild(b);
+                a.addEventListener("click", function(e) {
+                    /*when the select box is clicked, close any other select boxes,
+                    and open/close the current select box:*/
+                    e.stopPropagation();
+                    closeAllSelect(this);
+                    this.nextSibling.classList.toggle("select-hide");
+                    this.nextSibling.classList.toggle("select-show");
+                    this.classList.toggle("select-arrow-active");
+                });
+            }
+        }
+
+        function closeAllSelect(elmnt) {
+            /*a function that will close all select boxes in the document,
+            except the current select box:*/
+            var x, y, i, xl, yl, arrNo = [];
+            x = document.getElementsByClassName("select-items");
+            y = document.getElementsByClassName("select-selected");
+            xl = x.length;
+            yl = y.length;
+            for (i = 0; i < yl; i++) {
+                if (elmnt == y[i]) {
+                    arrNo.push(i)
+                } else {
+                    y[i].classList.remove("select-arrow-active");
+                }
+            }
+            for (i = 0; i < xl; i++) {
+                if (arrNo.indexOf(i) === -1) {
+                    x[i].classList.add("select-hide");
+                    x[i].classList.remove("select-show");
+                }
+            }
+        }
+        document.addEventListener("click", closeAllSelect);
+
+        // Function to update the displayed text and selected class for a custom select
+        function updateCustomSelectDisplay(selectElement) {
+            const customSelectDiv = selectElement.parentNode.parentNode; // .custom-select div
+            const selectSelectedDiv = customSelectDiv.querySelector('.select-selected');
+            const selectItemsDiv = customSelectDiv.querySelector('.select-items');
+
+            if (selectSelectedDiv && selectElement.options.length > 0) {
+                selectSelectedDiv.innerHTML = selectElement.options[selectElement.selectedIndex].innerHTML;
+
+                // Update 'same-as-selected' class in the dropdown list
+                if (selectItemsDiv) { // Check if selectItemsDiv exists
+                    Array.from(selectItemsDiv.children).forEach((item, index) => {
+                        if (index === selectElement.selectedIndex) {
+                            item.classList.add('same-as-selected');
+                        } else {
+                            item.classList.remove('same-as-selected');
+                        }
+                    });
+                }
+            }
+        }
+
+        // --- Admin Panel Logic ---
+
+        function toggleAdminMode(enable) {
+            if (enable) {
+                if (!currentUser) {
+                    // If not logged in, show login card and hide others
+                    loginCard.style.display = 'block';
+                    tokenCreateCard.style.display = 'none';
+                    manageTokensCard.style.display = 'none';
+                    banManagementCard.style.display = 'none';
+                    userManagementCard.style.display = 'none';
+                    tokenPricingCard.style.display = 'none';
+                    addBalanceCard.style.display = 'none';
+                    alert('Anda harus login sebagai admin atau reseller untuk mengakses panel admin.');
+                    return;
+                }
+                document.body.classList.add('admin-mode');
+                updateAdminPanelVisibility(); // Show/hide cards based on role
+                loadAdminData(); // Load admin data when entering admin mode
+            } else {
+                document.body.classList.remove('admin-mode');
+            }
+            // Ensure correct theme is applied based on current settings
+            applyTheme(getSettings().theme);
+            updateResellerBalanceDisplay(); // Update balance display when toggling mode
+        }
+
+        // --- Authentication Logic ---
+        async function handleLogin() {
+            clearAllErrorsInCard('loginCard'); // Clear errors before validation
+            const username = loginUsernameInput.value.trim();
+            const password = loginPasswordInput.value.trim();
+
+            let isValid = true;
+            if (!username) {
+                showError('loginUsername', 'Username wajib diisi.');
+                isValid = false;
+            }
+            if (!password) {
+                showError('loginPassword', 'Password wajib diisi.');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            showLoading(); // Show loading indicator
+            await new Promise(resolve => setTimeout(resolve, 500)); // Simulate async operation
+
+            // Cari user di array 'users'
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                // Login berhasil
+                currentUser = { ...user }; // Simpan data user yang login
+                alert(`Login berhasil! Selamat datang, ${currentUser.username} (${currentUser.role}).`);
+
+                // Sembunyikan kartu login
+                loginCard.style.display = 'none';
+
+                // Perbarui teks tombol Login/Logout di header
+                loginLogoutBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> Logout (${currentUser.username})`;
+
+                // Alihkan ke mode admin dan perbarui tampilan kartu admin
+                toggleAdminMode(true);
+                updateResellerBalanceDisplay(); // Update balance after login
+
+                // Kosongkan input password setelah login berhasil (opsional, untuk keamanan minimal)
+                loginPasswordInput.value = '';
+
+            } else {
+                // Login gagal
+                alert('Username atau password salah.');
+                currentUser = null; // Pastikan tidak ada user yang terautentikasi
+            }
+            hideLoading(); // Hide loading indicator
+        }
+
+        function handleLogout() {
+            currentUser = null; // Hapus data user yang login
+            alert('Anda telah logout.');
+
+            // Perbarui teks tombol Login/Logout di header
+            loginLogoutBtn.innerHTML = `<i class="fas fa-sign-in-alt"></i> Login`;
+
+            // Alihkan kembali ke mode client app
+            toggleAdminMode(false);
+
+            // Tampilkan kartu login jika kita berada di halaman admin
+            if (document.body.classList.contains('admin-mode')) {
+                loginCard.style.display = 'block';
+                // Sembunyikan kartu admin lainnya saat menampilkan login
+                document.getElementById('tokenCreateCard').style.display = 'none';
+                document.getElementById('manageTokensCard').style.display = 'none';
+                document.getElementById('banManagementCard').style.display = 'none';
+                document.getElementById('userManagementCard').style.display = 'none';
+                document.getElementById('tokenPricingCard').style.display = 'none';
+                document.getElementById('addBalanceCard').style.display = 'none';
+            }
+            updateResellerBalanceDisplay(); // Clear balance display after logout
+            hideLoading(); // Ensure loading is off after logout
+        }
+
+        // Event listener untuk tombol Login/Logout di header
+        loginLogoutBtn.addEventListener('click', () => {
+            if (currentUser) {
+                // Jika sudah login, lakukan logout
+                handleLogout();
+            } else {
+                // Jika belum login, tampilkan kartu login dan pastikan mode admin aktif
+                document.body.classList.add('admin-mode');
+                loginCard.style.display = 'block';
+                // Sembunyikan kartu admin lainnya saat menampilkan login
+                document.getElementById('tokenCreateCard').style.display = 'none';
+                document.getElementById('manageTokensCard').style.display = 'none';
+                document.getElementById('banManagementCard').style.display = 'none';
+                document.getElementById('userManagementCard').style.display = 'none';
+                document.getElementById('tokenPricingCard').style.display = 'none';
+                document.getElementById('addBalanceCard').style.display = 'none';
+            }
+        });
+
+
+        // --- Admin Panel Card Visibility based on Role ---
+        function updateAdminPanelVisibility() {
+            if (!currentUser) {
+                // Hide all admin cards if not logged in
+                tokenCreateCard.style.display = 'none';
+                manageTokensCard.style.display = 'none';
+                banManagementCard.style.display = 'none';
+                userManagementCard.style.display = 'none';
+                tokenPricingCard.style.display = 'none';
+                addBalanceCard.style.display = 'none';
+                resellerBalanceDisplayContainer.style.display = 'none'; // Hide balance for non-logged in
+                return;
+            }
+
+            // Always show these for any logged-in user in admin panel
+            tokenCreateCard.style.display = 'block';
+            manageTokensCard.style.display = 'block';
+            banManagementCard.style.display = 'block';
+
+            // Specific visibility for Admin role
+            if (currentUser.role === 'admin') {
+                userManagementCard.style.display = 'block';
+                tokenPricingCard.style.display = 'block';
+                addBalanceCard.style.display = 'block';
+                resellerBalanceDisplayContainer.style.display = 'none'; // Admins don't need to see "their" balance here
+            } else { // Reseller role
+                userManagementCard.style.display = 'none';
+                tokenPricingCard.style.display = 'none';
+                addBalanceCard.style.display = 'none';
+                resellerBalanceDisplayContainer.style.display = 'block'; // Show balance for resellers
+            }
+        }
+
+        // Functions to load and render admin dummy data
+        function loadAdminData() {
+            if (!currentUser) return; // Only load if logged in
+
+            loadUsers(); // Load users for admin, or self-user data for reseller
+            loadTokenPrices(); // Always load prices for token creation dropdown
+            loadTokens();
+            loadBans();
+            populateResellerToFundSelect(); // Populating dropdown for add balance
+            updateResellerBalanceDisplay(); // Ensure balance is updated when admin data loads
+        }
+
+        // --- User Management ---
+        async function loadUsers() {
+            userListDiv.innerHTML = '<div class="waiting-text">Memuat pengguna...</div>';
+            showLoading();
+            await new Promise(resolve => setTimeout(resolve, 500)); // Simulate async
+
+            userListDiv.innerHTML = '';
+            // Only admins can see all users, resellers only see their own entry (for balance reference)
+            const usersToDisplay = currentUser.role === 'admin' ? users : users.filter(u => u.id === currentUser.id);
+
+            if (usersToDisplay.length === 0) {
+                userListDiv.innerHTML = '<div class="waiting-text">Tidak ada pengguna ditemukan.</div>';
+                hideLoading();
+                return;
+            }
+
+            usersToDisplay.forEach(user => {
+                const item = document.createElement('div');
+                item.className = 'user-list-item';
+                item.innerHTML = `
+                    <div class="user-info">
+                        <span><strong>Username:</strong> ${user.username}</span>
+                        <span><strong>Role:</strong> <span class="role-${user.role}">${user.role.toUpperCase()}</span></span>
+                        ${user.role === 'reseller' ? `<span><strong>Saldo:</strong> <span class="balance">${formatCurrency(user.balance)}</span></span>` : ''}
+                    </div>
+                    <div class="user-actions">
+                        ${currentUser.role === 'admin' && user.id !== currentUser.id ? `<button class="admin-button danger" onclick="deleteUser('${user.id}')">Hapus</button>` : ''}
+                    </div>
+                `;
+                userListDiv.appendChild(item);
+            });
+            hideLoading();
+            updateResellerBalanceDisplay(); // Update balance display after user list loads (especially after balance change)
+        }
+
+        async function createNewUser() {
+            if (currentUser.role !== 'admin') {
+                alert('Anda tidak memiliki izin untuk membuat pengguna baru.');
+                return;
+            }
+            clearAllErrorsInCard('userManagementCard'); // Clear errors before validation
+
+            const username = newUsernameInput.value.trim();
+            const password = newPasswordInput.value.trim();
+            const role = newUserRoleSelect.value;
+
+            let isValid = true;
+            if (!username) {
+                showError('newUsername', 'Username wajib diisi.');
+                isValid = false;
+            }
+            if (!password) {
+                showError('newPassword', 'Password wajib diisi.');
+                isValid = false;
+            }
+            if (users.some(u => u.username === username)) {
+                showError('newUsername', 'Username sudah ada.');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            showLoading();
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            const newUser = {
+                id: generateId('usr_'),
+                username: username,
+                password: password, // In real app, hash this!
+                role: role,
+                balance: role === 'reseller' ? 0 : 0 // Start resellers with 0 balance
+            };
+
+            users.push(newUser);
+            alert('Pengguna baru berhasil dibuat!');
+            newUsernameInput.value = '';
+            newPasswordInput.value = '';
+            loadUsers();
+            populateResellerToFundSelect(); // Update reseller dropdown
+            hideLoading();
+        }
+
+        async function deleteUser(id) {
+            if (currentUser.role !== 'admin') {
+                alert('Anda tidak memiliki izin untuk menghapus pengguna.');
+                return;
+            }
+            if (id === currentUser.id) {
+                alert('Anda tidak bisa menghapus akun Anda sendiri.');
+                return;
+            }
+            if (confirm('Apakah Anda yakin ingin menghapus pengguna ini?')) {
+                showLoading();
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                users = users.filter(user => user.id !== id);
+                // Also remove any tokens created by this user
+                tokens = tokens.filter(token => token.created_by_user_id !== id);
+                alert('Pengguna berhasil dihapus.');
+                loadUsers();
+                loadTokens(); // Refresh token list as well
+                populateResellerToFundSelect();
+                hideLoading();
+            }
+        }
+
+        // --- Token Pricing Management (Admin Only) ---
+        async function loadTokenPrices() {
+            tokenPriceListDiv.innerHTML = '<div class="waiting-text">Memuat harga token...</div>';
+            showLoading();
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            tokenPriceListDiv.innerHTML = '';
+            if (tokenPrices.length === 0) {
+                tokenPriceListDiv.innerHTML = '<div class="waiting-text">Tidak ada harga token yang ditentukan.</div>';
+                hideLoading();
+                return;
+            }
+            tokenPrices.sort((a, b) => a.duration_days - b.duration_days).forEach(price => {
+                const item = document.createElement('div');
+                item.className = 'token-price-list-item';
+                item.innerHTML = `
+                    <div class="price-info">
+                        <span><strong>Durasi:</strong> ${price.duration_days} hari</span>
+                        <span><strong>Harga:</strong> ${formatCurrency(price.price)}</span>
+                    </div>
+                    <div class="price-actions">
+                        ${currentUser && currentUser.role === 'admin' ? `
+                            <button class="admin-button secondary" onclick="editTokenPrice('${price.id}')">Edit</button>
+                            <button class="admin-button danger" onclick="deleteTokenPrice('${price.id}')">Hapus</button>
+                        ` : ''}
+                    </div>
+                `;
+                tokenPriceListDiv.appendChild(item);
+            });
+            populateTokenDurationSelect(); // Populate the token creation dropdown
+            hideLoading();
+        }
+
+        async function addUpdateTokenPrice() {
+            if (currentUser.role !== 'admin') {
+                alert('Anda tidak memiliki izin untuk mengatur harga token.');
+                return;
+            }
+            clearAllErrorsInCard('tokenPricingCard'); // Clear errors
+
+            const duration = parseInt(newPriceDurationInput.value);
+            const price = parseFloat(newPriceAmountInput.value);
+
+            let isValid = true;
+            if (isNaN(duration) || duration < 1) {
+                showError('newPriceDuration', 'Durasi harus angka positif.');
+                isValid = false;
+            }
+            if (isNaN(price) || price <= 0) {
+                showError('newPriceAmount', 'Harga harus angka positif.');
+                isValid = false;
+            }
+            if (!isValid) return;
+
+            showLoading();
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            const existingPriceIndex = tokenPrices.findIndex(p => p.duration_days === duration);
+
+            if (existingPriceIndex > -1) {
+                tokenPrices[existingPriceIndex].price = price;
+                alert('Harga token berhasil diperbarui!');
+            } else {
+                const newPrice = {
+                    id: generateId('tp_'),
+                    duration_days: duration,
+                    price: price
+                };
+                tokenPrices.push(newPrice);
+                alert('Harga token baru berhasil ditambahkan!');
+            }
+            newPriceDurationInput.value = '';
+            newPriceAmountInput.value = '';
+            loadTokenPrices(); // Refresh list
+            hideLoading();
+        }
+
+        function editTokenPrice(id) {
+            if (currentUser.role !== 'admin') {
+                alert('Anda tidak memiliki izin untuk mengedit harga token.');
+                return;
+            }
+            const priceToEdit = tokenPrices.find(p => p.id === id);
+            if (priceToEdit) {
+                newPriceDurationInput.value = priceToEdit.duration_days;
+                newPriceAmountInput.value = priceToEdit.price;
+                alert('Edit nilai di formulir di atas dan klik "Add/Update Price" untuk menyimpan.');
+            }
+        }
+
+        async function deleteTokenPrice(id) {
+            if (currentUser.role !== 'admin') {
+                alert('Anda tidak memiliki izin untuk menghapus harga token.');
+                return;
+            }
+            if (confirm('Apakah Anda yakin ingin menghapus harga token ini?')) {
+                showLoading();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                tokenPrices = tokenPrices.filter(price => price.id !== id);
+                alert('Harga token berhasil dihapus.');
+                loadTokenPrices(); // Refresh list
+                hideLoading();
+            }
+        }
+
+        // --- Populate Token Duration Select and Update Price Display ---
+        function populateTokenDurationSelect() {
+            tokenDurationSelect.innerHTML = '<option value="">Pilih Durasi</option>';
+            tokenPrices.sort((a, b) => a.duration_days - b.duration_days).forEach(price => {
+                const option = document.createElement('option');
+                option.value = price.duration_days;
+                option.textContent = `${price.duration_days} hari (${formatCurrency(price.price)})`;
+                option.dataset.price = price.price; // Store price as data attribute
+                tokenDurationSelect.appendChild(option);
+            });
+            updateTokenPriceDisplay(); // Set initial price display
+        }
+
+        function updateTokenPriceDisplay() {
+            const selectedOption = tokenDurationSelect.options[tokenDurationSelect.selectedIndex];
+            if (selectedOption && selectedOption.value) {
+                const price = parseFloat(selectedOption.dataset.price);
+                tokenPriceDisplay.textContent = formatCurrency(price);
+            } else {
+                tokenPriceDisplay.textContent = 'Rp 0.00';
+            }
+        }
+        tokenDurationSelect.addEventListener('change', updateTokenPriceDisplay);
+
+
+        // --- Token Management ---
+        async function loadTokens() {
+            tokenListDiv.innerHTML = '<div class="waiting-text">Memuat token...</div>';
+            showLoading();
+            await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
+
+            tokenListDiv.innerHTML = '';
+            const tokensToDisplay = currentUser.role === 'admin' ? tokens : tokens.filter(t => t.created_by_user_id === currentUser.id);
+
+            if (tokensToDisplay.length === 0) {
+                tokenListDiv.innerHTML = '<div class="waiting-text">Tidak ada token ditemukan.</div>';
+                hideLoading();
+                return;
+            }
+
+            tokensToDisplay.forEach(token => {
+                const expirationStatus = (token.expires_at && new Date(token.expires_at) < new Date()) ? 'Kadaluarsa' : 'Aktif';
+                const statusClass = (token.expires_at && new Date(token.expires_at) < new Date()) ? 'expired' : (token.is_active ? 'active' : 'inactive');
+                const expiresIn = formatDate(token.expires_at);
+                const creator = users.find(u => u.id === token.created_by_user_id)?.username || 'Unknown';
+
+                const item = document.createElement('div');
+                item.className = 'token-list-item';
+                item.innerHTML = `
+                    <div class="token-info">
+                        <span><strong>Token:</strong> ${token.token_string}</span>
+                        <span><strong>Dibuat Oleh:</strong> ${creator}</span>
+                        <span><strong>Dibuat Pada:</strong> ${formatDate(token.created_at)}</span>
+                        <span><strong>Kadaluarsa Pada:</strong> ${expiresIn}</span>
+                        <span><strong>Perangkat:</strong> ${token.current_devices || 0} / ${token.max_devices}</span>
+                        <span><strong>Status:</strong> <span class="status ${statusClass}">${token.is_active ? expirationStatus : 'Tidak Aktif'}</span></span>
+                        <span><strong>Harga Asli:</strong> ${formatCurrency(token.price || 0)}</span>
+                    </div>
+                    <div class="token-actions">
+                        ${(currentUser && (currentUser.role === 'admin' || token.created_by_user_id === currentUser.id)) ? `
+                            <button class="admin-button secondary" onclick="openEditTokenModal('${token.id}')">Edit</button>
+                            <button class="admin-button danger" onclick="deleteToken('${token.id}')">Hapus</button>
+                            <button class="admin-button ${token.is_active ? 'danger' : 'success'}" onclick="toggleTokenActive('${token.id}', ${token.is_active})">
+                                ${token.is_active ? 'Nonaktifkan' : 'Aktifkan'}
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+                tokenListDiv.appendChild(item);
+            });
+            hideLoading();
+        }
+
+        async function createNewToken() {
+            if (!currentUser) {
+                alert('Anda harus login untuk membuat token.');
+                return;
+            }
+            clearAllErrorsInCard('tokenCreateCard'); // Clear errors
+
+            const tokenString = newTokenStringInput.value.trim();
+            const durationDays = parseInt(tokenDurationSelect.value);
+            const maxDevices = parseInt(maxDevicesInput.value);
+            const selectedPriceOption = tokenDurationSelect.options[tokenDurationSelect.selectedIndex];
+
+            let isValid = true;
+            if (!selectedPriceOption || !selectedPriceOption.value) {
+                showError('tokenDuration', 'Pilih durasi token.');
+                isValid = false;
+            }
+            if (isNaN(maxDevices) || maxDevices < 1) {
+                showError('maxDevices', 'Perangkat maks. harus angka positif.');
+                isValid = false;
+            }
+            // Add other validation rules here if needed, e.g., tokenString format
+
+            if (!isValid) return;
+
+            showLoading();
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            const tokenCost = parseFloat(selectedPriceOption.dataset.price);
+
+            if (currentUser.role === 'reseller') {
+                const resellerIndex = users.findIndex(u => u.id === currentUser.id);
+
+                if (resellerIndex === -1) {
+                    alert('Error: Data reseller tidak ditemukan.');
+                    hideLoading();
+                    return;
+                }
+
+                if (users[resellerIndex].balance < tokenCost) {
+                    alert(`Saldo Anda tidak cukup (${formatCurrency(users[resellerIndex].balance)}). Perlu ${formatCurrency(tokenCost)}.`);
+                    hideLoading();
+                    return;
+                }
+
+                users[resellerIndex].balance -= tokenCost;
+                currentUser.balance = users[resellerIndex].balance;
+
+                loadUsers(); // Refresh user list and implicitly current user's balance
+            }
+
+            const expiresAt = new Date();
+            expiresAt.setDate(expiresAt.getDate() + durationDays);
+
+            const newToken = {
+                id: generateId('tkn_'),
+                token_string: tokenString || generateId('TKN'),
+                created_at: new Date().toISOString(),
+                expires_at: expiresAt.toISOString(),
+                max_devices: maxDevices,
+                current_devices: 0,
+                is_active: true,
+                created_by_user_id: currentUser.id,
+                price: tokenCost
+            };
+
+            tokens.push(newToken);
+            alert(`Token berhasil dibuat! Biaya: ${formatCurrency(tokenCost)} telah dipotong.`);
+            newTokenStringInput.value = ''; // Clear form
+            tokenDurationSelect.value = '';
+            maxDevicesInput.value = '1';
+            updateTokenPriceDisplay(); // Reset price display
+            loadTokens(); // Refresh list
+            hideLoading();
+            updateResellerBalanceDisplay(); // Update balance display after token creation
+        }
+
+        async function deleteToken(id) {
+            const tokenToDelete = tokens.find(t => t.id === id);
+            if (!tokenToDelete) return;
+
+            if (currentUser.role !== 'admin' && tokenToDelete.created_by_user_id !== currentUser.id) {
+                alert('Anda tidak memiliki izin untuk menghapus token ini.');
+                return;
+            }
+
+            if (confirm('Apakah Anda yakin ingin menghapus token ini? Tindakan ini tidak dapat dibatalkan.')) {
+                showLoading();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                tokens = tokens.filter(token => token.id !== id);
+                alert('Token berhasil dihapus.');
+                loadTokens(); // Refresh list
+                hideLoading();
+            }
+        }
+
+        async function toggleTokenActive(id, currentState) {
+            const tokenIndex = tokens.findIndex(t => t.id === id);
+            if (tokenIndex > -1) {
+                const token = tokens[tokenIndex];
+                if (currentUser.role !== 'admin' && token.created_by_user_id !== currentUser.id) {
+                    alert('Anda tidak memiliki izin untuk mengubah status token ini.');
+                    return;
+                }
+                showLoading();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                token.is_active = !currentState;
+                alert(`Token ${token.token_string} telah ${token.is_active ? 'diaktifkan' : 'dinonaktifkan'}.`);
+                loadTokens(); // Refresh list
+                hideLoading();
+            }
+        }
+
+        // --- Edit Token Modal Functions ---
+        function openEditTokenModal(id) {
+            clearAllErrorsInCard('editTokenModal'); // Clear errors in modal
+            const tokenToEdit = tokens.find(t => t.id === id);
+
+            if (!tokenToEdit) {
+                alert('Token tidak ditemukan.');
+                return;
+            }
+
+            if (currentUser.role !== 'admin' && tokenToEdit.created_by_user_id !== currentUser.id) {
+                alert('Anda tidak memiliki izin untuk mengedit token ini.');
+                return;
+            }
+
+            editTokenIdInput.value = tokenToEdit.id;
+            editTokenStringInput.value = tokenToEdit.token_string;
+            editExpiresAtInput.value = formatToDatetimeLocal(tokenToEdit.expires_at);
+            editMaxDevicesInput.value = tokenToEdit.max_devices;
+            editIsActiveToggle.checked = tokenToEdit.is_active;
+
+            editTokenModal.style.display = 'flex'; // Show the modal
+            // Add a temporary overlay to prevent interaction with background
+            overlay.classList.add('visible'); // Reuse the existing overlay
+            overlay.style.zIndex = '1000'; // Make sure it's below modal but above sidebar
+        }
+
+        function closeEditTokenModal() {
+            editTokenModal.style.display = 'none'; // Hide the modal
+            overlay.classList.remove('visible');
+            overlay.style.zIndex = '999'; // Reset overlay z-index
+        }
+
+        async function saveEditedToken() {
+            clearAllErrorsInCard('editTokenModal'); // Clear errors
+
+            const id = editTokenIdInput.value;
+            const tokenString = editTokenStringInput.value.trim();
+            const expiresAt = editExpiresAtInput.value;
+            const maxDevices = parseInt(editMaxDevicesInput.value);
+            const isActive = editIsActiveToggle.checked;
+
+            let isValid = true;
+            if (!tokenString) {
+                showError('editTokenString', 'Token String tidak boleh kosong.');
+                isValid = false;
+            }
+            if (!expiresAt) {
+                showError('editExpiresAt', 'Tanggal kadaluarsa wajib diisi.');
+                isValid = false;
+            } else if (isNaN(new Date(expiresAt))) {
+                 showError('editExpiresAt', 'Format tanggal tidak valid.');
+                 isValid = false;
+            }
+            if (isNaN(maxDevices) || maxDevices < 1) {
+                showError('editMaxDevices', 'Perangkat maks. harus angka positif.');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            showLoading();
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            const tokenIndex = tokens.findIndex(t => t.id === id);
+            if (tokenIndex > -1) {
+                const originalToken = tokens[tokenIndex];
+
+                // Check permissions again just in case
+                if (currentUser.role !== 'admin' && originalToken.created_by_user_id !== currentUser.id) {
+                    alert('Anda tidak memiliki izin untuk menyimpan perubahan ini.');
+                    hideLoading();
+                    return;
+                }
+
+                originalToken.token_string = tokenString;
+                originalToken.expires_at = new Date(expiresAt).toISOString();
+                originalToken.max_devices = maxDevices;
+                originalToken.is_active = isActive;
+
+                alert('Token berhasil diperbarui!');
+                closeEditTokenModal();
+                loadTokens(); // Refresh the list
+            } else {
+                alert('Token tidak ditemukan untuk diperbarui.');
+            }
+            hideLoading();
+        }
+
+        // --- Ban Management ---
+        async function loadBans() {
+            banListDiv.innerHTML = '<div class="waiting-text">Memuat daftar ban...</div>';
+            showLoading();
+            await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
+
+            banListDiv.innerHTML = '';
+            // Admin can see all bans, Reseller can only see bans they made (if implemented, not in current dummy)
+            // For simplicity in dummy, all roles see all bans for now
+            const bansToDisplay = currentUser && currentUser.role === 'admin' ? bans : bans.filter(b => b.banned_by_user_id === currentUser.id);
+
+
+            if (bansToDisplay.length === 0) {
+                banListDiv.innerHTML = '<div class="waiting-text">Tidak ada ban ditemukan.</div>';
+                hideLoading();
+                return;
+            }
+
+            bansToDisplay.forEach(ban => {
+                const statusClass = ban.is_active ? 'active' : 'inactive';
+                const durationText = ban.ban_duration_days ? `${ban.ban_duration_days} hari` : 'Permanen';
+                const banner = users.find(u => u.id === ban.banned_by_user_id)?.username || 'Unknown';
+
+                const item = document.createElement('div');
+                item.className = 'ban-list-item';
+                item.innerHTML = `
+                    <div class="ban-info">
+                        <span><strong>Tipe:</strong> ${ban.entity_type}</span>
+                        <span><strong>Nilai:</strong> ${ban.entity_value}</span>
+                        <span><strong>Alasan:</strong> ${ban.reason}</span>
+                        <span><strong>Diblokir Pada:</strong> ${formatDate(ban.banned_at)}</span>
+                        <span><strong>Durasi:</strong> ${durationText}</span>
+                        <span><strong>Oleh:</strong> ${banner}</span>
+                        <span><strong>Status:</strong> <span class="status ${statusClass}">${ban.is_active ? 'Aktif' : 'Tidak Aktif'}</span></span>
+                    </div>
+                    <div class="ban-actions">
+                        ${(currentUser && (currentUser.role === 'admin' || ban.banned_by_user_id === currentUser.id)) ? `
+                            <button class="admin-button ${ban.is_active ? 'success' : 'secondary'}" onclick="toggleBanActive('${ban.id}', ${ban.is_active})">
+                                ${ban.is_active ? 'Batalkan Ban' : 'Aktifkan Ban'}
+                            </button>
+                            <button class="admin-button danger" onclick="deleteBan('${ban.id}')">Hapus</button>
+                        ` : ''}
+                    </div>
+                `;
+                banListDiv.appendChild(item);
+            });
+            hideLoading();
+        }
+
+        async function applyBan() {
+            if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'reseller')) {
+                alert('Anda tidak memiliki izin untuk menerapkan ban.');
+                return;
+            }
+            clearAllErrorsInCard('banManagementCard'); // Clear errors
+
+            const entityType = banEntityTypeSelect.value;
+            const entityValue = banEntityValueInput.value.trim();
+            const reason = banReasonInput.value.trim();
+            const duration = parseInt(banDurationInput.value);
+
+            let isValid = true;
+            if (!entityValue) {
+                showError('banEntityValue', 'Nilai yang akan di-ban wajib diisi.');
+                isValid = false;
+            }
+            if (!reason) {
+                showError('banReason', 'Alasan wajib diisi.');
+                isValid = false;
+            }
+            if (!isNaN(duration) && duration < 1) {
+                showError('banDuration', 'Durasi ban harus angka positif.');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            const existingActiveBan = bans.some(b =>
+                b.is_active && b.entity_type === entityType && b.entity_value === entityValue
+            );
+
+            if (existingActiveBan) {
+                alert(`Ban untuk "${entityValue}" (${entityType}) sudah ada dan aktif. Silakan batalkan ban jika Anda ingin memodifikasi.`);
+                return;
+            }
+
+            showLoading();
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            const newBan = {
+                id: generateId('ban_'),
+                entity_type: entityType,
+                entity_value: entityValue,
+                reason: reason,
+                banned_at: new Date().toISOString(),
+                ban_duration_days: isNaN(duration) ? null : duration, // null for permanent
+                is_active: true,
+                banned_by_user_id: currentUser.id
+            };
+
+            bans.push(newBan);
+            alert('Ban berhasil diterapkan!');
+            banEntityValueInput.value = '';
+            banReasonInput.value = '';
+            banDurationInput.value = '';
+            loadBans(); // Refresh list
+            hideLoading();
+        }
+
+        async function toggleBanActive(id, currentState) {
+             const banIndex = bans.findIndex(b => b.id === id);
+            if (banIndex > -1) {
+                const ban = bans[banIndex];
+                if (currentUser.role !== 'admin' && ban.banned_by_user_id !== currentUser.id) {
+                    alert('Anda tidak memiliki izin untuk mengubah status ban ini.');
+                    return;
+                }
+                showLoading();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                ban.is_active = !currentState;
+                alert(`${ban.entity_value} telah ${ban.is_active ? 'diaktifkan kembali' : 'dibatalkan ban'}.`);
+                loadBans(); // Refresh list
+                hideLoading();
+            }
+        }
+
+        async function deleteBan(id) {
+            const banToDelete = bans.find(b => b.id === id);
+            if (!banToDelete) return;
+
+            if (currentUser.role !== 'admin' && banToDelete.banned_by_user_id !== currentUser.id) {
+                alert('Anda tidak memiliki izin untuk menghapus catatan ban ini.');
+                return;
+            }
+
+            if (confirm('Apakah Anda yakin ingin menghapus catatan ban ini secara permanen?')) {
+                showLoading();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                bans = bans.filter(ban => ban.id !== id);
+                alert('Catatan ban berhasil dihapus.');
+                loadBans(); // Refresh list
+                hideLoading();
+            }
+        }
+
+        // --- Add Balance to Reseller (Admin Only) ---
+        function populateResellerToFundSelect() {
+            if (currentUser && currentUser.role === 'admin') {
+                resellerToFundSelect.innerHTML = '<option value="">Pilih Reseller</option>';
+                const resellers = users.filter(u => u.role === 'reseller');
+                resellers.forEach(reseller => {
+                    const option = document.createElement('option');
+                    option.value = reseller.id;
+                    option.textContent = `${reseller.username} (Saldo: ${formatCurrency(reseller.balance)})`;
+                    resellerToFundSelect.appendChild(option);
+                });
+            }
+        }
+
+        async function addBalanceToReseller() {
+            if (currentUser.role !== 'admin') {
+                alert('Anda tidak memiliki izin untuk menambah saldo.');
+                return;
+            }
+            clearAllErrorsInCard('addBalanceCard'); // Clear errors
+
+            const resellerId = resellerToFundSelect.value;
+            const amount = parseFloat(amountToAddInput.value);
+
+            let isValid = true;
+            if (!resellerId) {
+                showError('resellerToFund', 'Pilih reseller.');
+                isValid = false;
+            }
+            if (isNaN(amount) || amount <= 0) {
+                showError('amountToAdd', 'Jumlah harus angka positif.');
+                isValid = false;
+            }
+            if (!isValid) return;
+
+            showLoading();
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            const reseller = users.find(u => u.id === resellerId);
+            if (reseller) {
+                reseller.balance += amount;
+                alert(`Saldo ${formatCurrency(amount)} berhasil ditambahkan ke ${reseller.username}. Saldo baru: ${formatCurrency(reseller.balance)}.`);
+                amountToAddInput.value = '';
+                loadUsers(); // Refresh user list to show updated balance and currentUser if it's the current user
+                populateResellerToFundSelect(); // Refresh dropdown for updated balance
+                loadTokens(); // Refresh token list as reseller's balance affects token creation possibility
+            } else {
+                alert('Reseller tidak ditemukan.');
+            }
+            hideLoading();
+            updateResellerBalanceDisplay(); // Update balance display after adding balance
+        }
+
+        // --- New: Update Reseller Balance Display ---
+        function updateResellerBalanceDisplay() {
+            if (currentUser && currentUser.role === 'reseller') {
+                const currentReseller = users.find(u => u.id === currentUser.id);
+                if (currentReseller) {
+                    resellerBalanceDisplay.textContent = formatCurrency(currentReseller.balance);
+                    resellerBalanceDisplayContainer.style.display = 'block';
+                } else {
+                    resellerBalanceDisplay.textContent = 'Rp 0.00';
+                    resellerBalanceDisplayContainer.style.display = 'none';
+                }
+            } else {
+                resellerBalanceDisplay.textContent = 'Rp 0.00';
+                resellerBalanceDisplayContainer.style.display = 'none';
+            }
+        }
+
+        // --- Initial Load Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeCustomSelects(); // Initialize custom dropdowns once DOM is ready
+
+            // Initial render of client app with empty data and default settings (before loading saved settings)
+            const initialDefaultSettings = getSettings();
+            applyAllSettings(initialDefaultSettings, { team: [], enemy: [] });
+
+            loadSettings(); // This loads saved settings and updates the UI controls
+
+            // After loading settings, check for autoReady and token for client app
+            const settingsAfterLoad = getSettings();
+            const savedToken = localStorage.getItem('hylosToken');
+
+            if (settingsAfterLoad.autoReady && savedToken) {
+                tokenInput.value = savedToken;
+                tokenInput.setAttribute('type', 'password');
+                togglePassword.classList.remove('fa-eye');
+                togglePassword.classList.add('fa-eye-slash');
+                startButton.click(); // Programmatically click the start button
+            }
+
+            // Pastikan loginCard ditampilkan saat pertama kali di load jika belum login
+            // dan tidak dalam mode admin (untuk user biasa yang langsung buka halaman)
+            if (!currentUser) { // Check if user is NOT logged in
+                loginCard.style.display = 'block'; // Show the login card
+                // Sembunyikan semua kartu admin lainnya secara default
+                document.getElementById('tokenCreateCard').style.display = 'none';
+                document.getElementById('manageTokensCard').style.display = 'none';
+                document.getElementById('banManagementCard').style.display = 'none';
+                document.getElementById('userManagementCard').style.display = 'none';
+                document.getElementById('tokenPricingCard').style.display = 'none';
+                document.getElementById('addBalanceCard').style.display = 'none';
+            }
+
+            // Update login button text on initial load based on currentUser status (if we were using persistent login)
+            // For this demo, currentUser is reset on page reload, so it will always initially show "Login"
+            if (currentUser) {
+                loginLogoutBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> Logout (${currentUser.username})`;
+            }
+            updateResellerBalanceDisplay(); // Initial display of balance on load
+        });
+    </script>
+</body>
+</html>
